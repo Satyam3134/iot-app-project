@@ -10,6 +10,7 @@ export const config = {
         secret: process.env.WEBHOOK_SECRET
     },
     fcm: {
-        topic: process.env.FCM_TOPIC || 'iot_updates'
+        topic: process.env.FCM_TOPIC || 'iot_updates',
+        serviceAccount: process.env.FIREBASE_SERVICE_ACCOUNT
     }
 };

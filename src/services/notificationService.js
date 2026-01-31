@@ -15,9 +15,22 @@ class NotificationService {
 
         // Initialize Firebase
         try {
-            const serviceAccountPath = path.join(__dirname, '../../firebase-service-account.json');
-            if (fs.existsSync(serviceAccountPath)) {
-                const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+            let serviceAccount;
+
+            if (config.fcm.serviceAccount) {
+                // Method 1: Load from Environment Variable (Best for Render)
+                serviceAccount = JSON.parse(config.fcm.serviceAccount);
+                logger.info('Initializing Firebase via Environment Variable');
+            } else {
+                // Method 2: Fallback to local file (Local Development)
+                const serviceAccountPath = path.join(__dirname, '../../firebase-service-account.json');
+                if (fs.existsSync(serviceAccountPath)) {
+                    serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+                    logger.info('Initializing Firebase via local JSON file');
+                }
+            }
+
+            if (serviceAccount) {
                 admin.initializeApp({
                     credential: admin.credential.cert(serviceAccount)
                 });
@@ -25,7 +38,7 @@ class NotificationService {
                 logger.info('Firebase Admin initialized successfully.');
             } else {
                 this.fcmEnabled = false;
-                logger.warn('firebase-service-account.json not found. FCM disabled.');
+                logger.warn('Firebase Service Account not found (Env or File). FCM disabled.');
             }
         } catch (error) {
             this.fcmEnabled = false;
