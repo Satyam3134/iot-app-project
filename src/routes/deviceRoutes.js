@@ -15,6 +15,12 @@ router.post('/setState', deviceController.setState);
 // Device: Poll for updates
 router.get('/device/poll', deviceController.poll);
 
+// Device: Remove specific device
+router.delete('/device/remove', deviceController.removeDevice);
+
+// Device: Clear all devices
+router.delete('/devices/clear', deviceController.clearDevices);
+
 // TEST ROUTE: Manually trigger a notification
 router.post('/notify/test', async (req, res) => {
     try {

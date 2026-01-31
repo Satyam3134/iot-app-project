@@ -77,6 +77,37 @@ export const deviceController = {
         }
     },
 
+    // DELETE DEVICE
+    removeDevice: (req, res) => {
+        try {
+            const { id } = req.body;
+            if (!id) return res.status(400).json({ error: "Device ID required" });
+
+            const success = deviceStore.deleteDevice(id);
+            if (success) {
+                logger.info(`Device removed: ${id}`);
+                res.json({ ok: true, message: "Device removed" });
+            } else {
+                res.status(404).json({ error: "Device not found" });
+            }
+        } catch (error) {
+            logger.error("Error in removeDevice:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        }
+    },
+
+    // CLEAR ALL DEVICES
+    clearDevices: (req, res) => {
+        try {
+            deviceStore.clearAllDevices();
+            logger.info("All devices cleared from memory");
+            res.json({ ok: true, message: "Store cleared" });
+        } catch (error) {
+            logger.error("Error in clearDevices:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        }
+    },
+
     // POLL (ESP32)
     poll: (req, res) => {
         try {

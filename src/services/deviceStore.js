@@ -55,6 +55,26 @@ class DeviceStore {
             online: (now - d.lastSeen) < 10000
         }));
     }
+    /**
+     * Delete a device by ID
+     * @param {string} id 
+     * @returns {boolean} True if deleted, false if not found
+     */
+    deleteDevice(id) {
+        const index = this.devices.findIndex(d => d.id === id);
+        if (index !== -1) {
+            this.devices.splice(index, 1);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Clear all registered devices
+     */
+    clearAllDevices() {
+        this.devices = [];
+    }
 }
 
 // Singleton instance

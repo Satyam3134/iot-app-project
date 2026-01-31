@@ -46,7 +46,7 @@ Use the `HTTPClient` library in Arduino IDE:
 #include <HTTPClient.h>
 #include <WiFi.h>
 
-const char* serverUrl = "http://192.168.1.XX:3000/api/device/register";
+const char* serverUrl = "https://iot-app-project.onrender.com/api/device/register";
 
 void sendHeartbeat() {
     if(WiFi.status() == WL_CONNECTED) {
